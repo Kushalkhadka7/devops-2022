@@ -1,0 +1,36 @@
+---
+version: "3"
+
+services:
+  app:
+    container_name: devops-demo-app
+    build:
+      context: './app'
+      target: dev
+    restart: always
+    env_file: 
+      - ./app/.env
+    ports:
+      - "4000:4000"
+    volumes:
+      - "/home/kushal/PROJECTS/devops-2022/app:/app"
+    depends_on:
+      - mongo-db
+    command: go run main.go
+    
+  mongo-db:
+    container_name: mongo-db
+    image: mongo:latest
+    restart: always
+    ports:
+      - 27017:27017
+    volumes:
+      - mongo-db:/data/db
+      - ./mongo-init.js:/docker-entrypoint-initdb.d/mongo-init.js:ro
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: root
+      MONGO_INITDB_DATABASE: devops-demo
+
+volumes:
+  mongo-db:

@@ -26,7 +26,7 @@ func New() (*Config, error) {
 	authUrl := os.Getenv("MANAGER_URL")
 	dbUri := os.Getenv("MONGO_DB_URI")
 
-	fmt.Printf("%s", dbUri)
+	fmt.Printf("database: %s", dbUri)
 
 	return &Config{
 		Server: &serverConfig{

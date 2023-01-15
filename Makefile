@@ -1,5 +1,7 @@
-.PHONY: cluster delete-clusters help
+.PHONY: cluster delete-clusters help database
 .DEFAULT_GOAL := help
+
+APP_ROOT ?= $(shell 'pwd')
 
 # Load all the environment variables from .env
 export $(cat .env | xargs)
@@ -52,11 +54,20 @@ cluster-lb: ## deploy metallb overlay network to cluster
 	@kubectl apply -f $(METAL_LB)/metallb.yml
 	@kubectl create secret generic -n metallb-system memberlist --from-literal=secretkey="$(openssl rand -base64 128)" 
 
-metric-srv:
+deploy-metric-srv:
 	@kubectl apply -f $(METRIC_SERVER)/deployment.yml
 
 label-node:
 	@kubectl label nodes $(NODE_NAME) env=$(STAGE)
-	
+
+ns-quota:
+	@kubectl apply -f $(APP_ROOT)/k8s .
+
+database:
+	@kubectl apply -f $(APP_ROOT)/database .
+
+efk:
+	@kubectl apply -f $(APP_ROOT)/efk .
+
 help:
 	@python3 -c "$$PRINT_HELP_PYSCRIPT" < $(MAKEFILE_LIST)

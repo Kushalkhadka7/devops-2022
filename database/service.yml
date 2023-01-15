@@ -2,10 +2,10 @@
   apiVersion: "v1"
   kind: "Service"
   metadata: 
-    name: "mongo-db"
+    name: "mongodb-service"
     namespace: "dev"
     labels: 
-      app: "mongo-db"
+      app: "mongo"
   spec: 
     ports: 
       - 
@@ -14,4 +14,4 @@
         targetPort: 27017
     clusterIP: "None"
     selector: 
-      app: "mongo-db"
+      app: "mongo"

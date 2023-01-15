@@ -18,3 +18,34 @@ DevOps Part 3 Assignment 2
 - Setup ArgoCD for CD or setup argo stack for CI/CD
 - Deploy Prometheus and grafana for resource monitoring(create user and alert)
 - Deploy cronjob, Ingress and Secrets & configmap
+
+## Steps to run locally
+
+- Create kind cluster with 2 worker nodes
+  ```
+  make cluster
+  ```
+- Deploy metric server
+  ```
+  make deploy-metric-server
+  ```
+- Label node to dev
+  ```
+  kubectl label nodes devops-demo-worker env=dev
+  ```
+- Create namespace and define request quota
+  ```
+  make ns-quota
+  ```
+- Deploy mondo-db database
+  ```
+  make database
+  ```
+- Deploy application
+  ```
+  cd app &&  make apply
+  ```
+- Deploy efk
+  ```
+  make efk
+  ```

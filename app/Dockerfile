@@ -3,13 +3,20 @@ FROM golang:alpine as dev
 
 WORKDIR /app 
 
+LABEL maintainer="kushal khadka"  
+
 RUN CGO_ENABLED=0 
 RUN GOOS=linux 
 
 # Enable go modules
 ENV GO111MODULE=on
 
-COPY . /app/
+COPY go.mod .
+COPY go.sum .
+
+RUN go mod download
+
+COPY . .
 
 ENV SHELL=/bin/bash
 
@@ -22,9 +29,9 @@ FROM golang:alpine as builder
 
 WORKDIR /app
 
-COPY --from=dev /app /app
+COPY --from=dev /app .
 
-CMD [ "go", "build", "manager"]
+RUN go build .
 
 
 # Stage: prod.
@@ -32,8 +39,8 @@ FROM golang:alpine as prod
 
 WORKDIR /app
 
-COPY --from=builder /app/ .
+COPY --from=builder /app .
 
 EXPOSE 4000
 
-CMD [ "./manager"]
+CMD [ "./demo-app"]

@@ -41,6 +41,7 @@ export CONTINER_PORT ?= 4000
 export DOCKER_BUILD_FLAGS ?= --no-cache
 export DOCKER_BUILD_PATH ?= $(APP_ROOT)
 export SOURCE_IMAGE ?= demo-app
+export REGISTRY_URL?= crkushal7
 export DOCKER_FILE ?= $(APP_ROOT)/Dockerfile
 export TARGET_IMAGE ?= $(REGISTRY_URL)/demo-app
 export TARGET_IMAGE_LATEST ?= $(TARGET_IMAGE):$(SOURCE_IMAGE)-$(GIT_BRANCH)-$(GIT_COMMIT)
@@ -76,11 +77,10 @@ edit-kustomize:
 	echo $(ENV_PATH)
 	@cp $(OVERLAY_ROOT)/kustomization.template.yaml $(OVERLAY_PATH)/kustomization.yaml
 	@cp $(ENV_PATH) $(OVERLAY_PATH)/.env
-	@cd $(OVERLAY_PATH) && kustomize edit add configmap manager-config --from-env-file .env
+	@cd $(OVERLAY_PATH) && kustomize edit add configmap demo-app-config --from-env-file .env
 
 apply:## Kubectl apply using kustomize
 	@kustomize build $(OVERLAY_PATH) | kubectl apply -f -
-
 
 build-local: ## build docker image for local use
 	@docker build $(DOCKER_BUILD_FLAGS) -t $(SOURCE_IMAGE) --target $(TARGET_STAGE) -f $(DOCKER_FILE) $(DOCKER_BUILD_PATH)

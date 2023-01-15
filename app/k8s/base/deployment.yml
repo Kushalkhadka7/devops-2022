@@ -1,23 +1,23 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: manager
+  name: demo-app
   labels:
-    app: manager
+    app: demo-app
 spec:
   replicas: 2
   selector:
     matchLabels:
-      app: manager
+      app: demo-app
   template:
     metadata:
       labels:
-        app: manager
+        app: demo-app
     spec:
       volumes:
-        - name: manager-creds
+        - name: demo-app-creds
           secret:
-            secretName: dev-manager-secret
+            secretName: dev-demo-app-secret
 
         - name: shared-volume
           emptyDir: {}
@@ -32,11 +32,11 @@ spec:
           args: ["-c", "echo 'hello kuberenetes' > /shared/abc.txt"]
 
       containers:
-        - name: manager
-          image: crkushal7/manager:2.1.0
+        - name: demo-app
+          image: crkushal7/demo-app
           imagePullPolicy: Always
           volumeMounts:
-            - name: manager-creds
+            - name: demo-app-creds
               mountPath: /data
 
             - name: shared-volume
@@ -47,34 +47,34 @@ spec:
             requests:
               cpu: "50m"
           ports:
-            - containerPort: 5000
+            - containerPort: 4000
               protocol: TCP
           env:
             - name: PORT
               valueFrom:
                 configMapKeyRef:
-                  name: dev-manager-config
+                  name: demo-app-config-4t9f95dtg6
                   key: PORT
             - name: NAME
               valueFrom:
                 configMapKeyRef:
-                  name: dev-manager-config
+                  name: demo-app-config-4t9f95dtg6
                   key: NAME
             - name: HOST
               valueFrom:
                 configMapKeyRef:
-                  name: dev-manager-config
+                  name: demo-app-config-4t9f95dtg6
                   key: HOST
             - name: ADMIN_URL
               valueFrom:
                 configMapKeyRef:
-                  name: dev-manager-config
+                  name: demo-app-config-4t9f95dtg6
                   key: ADMIN_URL
-            - name: MANAGER_URL
+            - name: demo-app_URL
               valueFrom:
                 configMapKeyRef:
-                  name: dev-manager-config
-                  key: MANAGER_URL
+                  name: demo-app-config-4t9f95dtg6
+                  key: demo-app_URL
             - name: MONGO_DB_URL
               valueFrom:
                 configMapKeyRef:
@@ -83,10 +83,10 @@ spec:
             - name: DB_USER_NAME
               valueFrom:
                 secretKeyRef:
-                  name: dev-mongo-secret-2h79b4gm99
+                  name: dev-demo-app-secret
                   key: DB_USER_NAME
             - name: DB_PASSWORD
               valueFrom:
                 secretKeyRef:
-                  name: dev-mongo-secret-2h79b4gm99
+                  name: dev-demo-app-secret
                   key: DB_PASSWORD

@@ -79,6 +79,9 @@ edit-kustomize:
 	@cp $(ENV_PATH) $(OVERLAY_PATH)/.env
 	@cd $(OVERLAY_PATH) && kustomize edit add configmap demo-app-config --from-env-file .env
 
+build-kustomize:## Kubectl apply using kustomize
+	@kustomize build $(OVERLAY_PATH) 
+
 apply:## Kubectl apply using kustomize
 	@kustomize build $(OVERLAY_PATH) | kubectl apply -f -
 

@@ -44,8 +44,10 @@ spec:
           resources:
             limits:
               cpu: "300m"
+              memory: "100Mi"
             requests:
               cpu: "50m"
+              memory: "100Mi"
           ports:
             - containerPort: 4000
               protocol: TCP
@@ -53,40 +55,35 @@ spec:
             - name: PORT
               valueFrom:
                 configMapKeyRef:
-                  name: demo-app-config-4t9f95dtg6
+                  name: dev-demo-app-config-9hf47t2bdm
                   key: PORT
             - name: NAME
               valueFrom:
                 configMapKeyRef:
-                  name: demo-app-config-4t9f95dtg6
+                  name: dev-demo-app-config-9hf47t2bdm
                   key: NAME
             - name: HOST
               valueFrom:
                 configMapKeyRef:
-                  name: demo-app-config-4t9f95dtg6
+                  name: dev-demo-app-config-9hf47t2bdm
                   key: HOST
             - name: ADMIN_URL
               valueFrom:
                 configMapKeyRef:
-                  name: demo-app-config-4t9f95dtg6
+                  name: dev-demo-app-config-9hf47t2bdm
                   key: ADMIN_URL
-            - name: demo-app_URL
+            - name: MONGO_DB_URI
               valueFrom:
                 configMapKeyRef:
-                  name: demo-app-config-4t9f95dtg6
-                  key: demo-app_URL
-            - name: MONGO_DB_URL
-              valueFrom:
-                configMapKeyRef:
-                  name: dev-mongo-config-f4tf898fkh
-                  key: MONGO_DB_URL
+                  name: dev-demo-app-config-9hf47t2bdm
+                  key: MONGO_DB_URI
             - name: DB_USER_NAME
               valueFrom:
                 secretKeyRef:
                   name: dev-demo-app-secret
-                  key: DB_USER_NAME
+                  key: USER_NAME
             - name: DB_PASSWORD
               valueFrom:
                 secretKeyRef:
                   name: dev-demo-app-secret
-                  key: DB_PASSWORD
+                  key: PASSWORD

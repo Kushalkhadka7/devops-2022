@@ -1,6 +1,7 @@
 package config
 
 import (
+	"fmt"
 	"os"
 )
 
@@ -24,6 +25,8 @@ func New() (*Config, error) {
 	adminUrl := os.Getenv("ADMIN_URL")
 	authUrl := os.Getenv("MANAGER_URL")
 	dbUri := os.Getenv("MONGO_DB_URI")
+
+	fmt.Printf("%s", dbUri)
 
 	return &Config{
 		Server: &serverConfig{

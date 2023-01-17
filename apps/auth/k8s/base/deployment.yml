@@ -1,0 +1,89 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: auth
+  labels:
+    app: auth
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: auth
+  template:
+    metadata:
+      labels:
+        app: auth
+    spec:
+      volumes:
+        - name: auth-creds
+          secret:
+            secretName: dev-auth-secret
+
+        - name: shared-volume
+          emptyDir: {}
+
+      initContainers:
+        - name: busybox
+          image: busybox
+          volumeMounts:
+            - name: shared-volume
+              mountPath: /shared
+          command: ["/bin/sh"]
+          args: ["-c", "echo 'hello kuberenetes' > /shared/abc.txt"]
+
+      containers:
+        - name: auth
+          image: crkushal7/auth
+          imagePullPolicy: Always
+          volumeMounts:
+            - name: auth-creds
+              mountPath: /data
+
+            - name: shared-volume
+              mountPath: /data2
+          resources:
+            limits:
+              cpu: "300m"
+              memory: "100Mi"
+            requests:
+              cpu: "50m"
+              memory: "100Mi"
+          ports:
+            - containerPort: 4000
+              protocol: TCP
+          env:
+            - name: PORT
+              valueFrom:
+                configMapKeyRef:
+                  name: dev-auth-config-m8tb9mc588
+                  key: PORT
+            - name: NAME
+              valueFrom:
+                configMapKeyRef:
+                  name: dev-auth-config-m8tb9mc588
+                  key: NAME
+            - name: HOST
+              valueFrom:
+                configMapKeyRef:
+                  name: dev-auth-config-m8tb9mc588
+                  key: HOST
+            - name: ADMIN_URL
+              valueFrom:
+                configMapKeyRef:
+                  name: dev-auth-config-m8tb9mc588
+                  key: ADMIN_URL
+            - name: MONGO_DB_URI
+              valueFrom:
+                configMapKeyRef:
+                  name: dev-auth-config-m8tb9mc588
+                  key: MONGO_DB_URI
+            - name: DB_USER_NAME
+              valueFrom:
+                secretKeyRef:
+                  name: dev-auth-secret
+                  key: USER_NAME
+            - name: DB_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: dev-auth-secret
+                  key: PASSWORD

@@ -7,4 +7,3 @@ resources:
   - secrets.yml
   - service.yml
   - deployment.yml
-  - hpa.yml

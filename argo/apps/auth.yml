@@ -1,14 +1,14 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: manager-app
+  name: auth-app
   namespace: argocd
 spec:
   project: default
   source:
     repoURL: https://github.com/Kushalkhadka7/devops-2022
     targetRevision: main
-    path: apps/manager/k8s/overlays/dev
+    path: apps/auth/k8s/overlays/dev
   destination:
     server: https://kubernetes.default.svc
     namespace: dev

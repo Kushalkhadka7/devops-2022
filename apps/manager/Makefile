@@ -40,10 +40,10 @@ export STAGE_PROD ?= 'prod'
 export CONTINER_PORT ?= 4000
 export DOCKER_BUILD_FLAGS ?= --no-cache
 export DOCKER_BUILD_PATH ?= $(APP_ROOT)
-export SOURCE_IMAGE ?= demo-app
+export SOURCE_IMAGE ?= manager
 export REGISTRY_URL?= crkushal7
 export DOCKER_FILE ?= $(APP_ROOT)/Dockerfile
-export TARGET_IMAGE ?= $(REGISTRY_URL)/demo-app
+export TARGET_IMAGE ?= $(REGISTRY_URL)/manager
 export TARGET_IMAGE_LATEST ?= $(TARGET_IMAGE):$(SOURCE_IMAGE)-$(GIT_BRANCH)-$(GIT_COMMIT)
 
 -include $(ENVIRONMENT_OVERRIDE_PATH)
@@ -52,7 +52,7 @@ export ENV_PATH ?= $(APP_ROOT)/.env
 
 
 define kustomize-image-edit
-	cd $(OVERLAY_PATH) && kustomize edit set image crkushal7/demo-app=$(1) && cd $(APP_ROOT)
+	cd $(OVERLAY_PATH) && kustomize edit set image crkushal7/manager=$(1) && cd $(APP_ROOT)
 endef
 
 docker-build: ## build docker image
@@ -77,7 +77,7 @@ edit-kustomize:
 	echo $(ENV_PATH)
 	@cp $(OVERLAY_ROOT)/kustomization.template.yaml $(OVERLAY_PATH)/kustomization.yaml
 	@cp $(ENV_PATH) $(OVERLAY_PATH)/.env
-	@cd $(OVERLAY_PATH) && kustomize edit add configmap demo-app-config --from-env-file .env
+	@cd $(OVERLAY_PATH) && kustomize edit add configmap manager-config --from-env-file .env
 
 build-kustomize:## Kubectl apply using kustomize
 	@kustomize build $(OVERLAY_PATH) 

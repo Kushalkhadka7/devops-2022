@@ -1,10 +1,10 @@
 package main
 
 import (
-	"demo-app/config"
-	"demo-app/router"
-	"demo-app/server"
 	"fmt"
+	"manager/config"
+	"manager/router"
+	"manager/server"
 	"os"
 )
 

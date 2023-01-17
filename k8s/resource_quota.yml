@@ -6,7 +6,7 @@ metadata:
 spec:
   hard:
     cpu: "2"
-    pods: '10'
-    memory: "1Gi"
+    pods: '20'
+    memory: "2Gi"
     services: "5"
     resourcequotas: "1"

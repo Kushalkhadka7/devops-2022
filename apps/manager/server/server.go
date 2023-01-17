@@ -3,8 +3,8 @@ package server
 import (
 	"fmt"
 	"log"
-	"demo-app/config"
-	"demo-app/router"
+	"manager/config"
+	"manager/router"
 	"net/http"
 )
 

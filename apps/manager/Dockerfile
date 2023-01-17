@@ -41,6 +41,6 @@ WORKDIR /app
 
 COPY --from=builder /app .
 
-EXPOSE 4000
+EXPOSE 5000
 
-CMD [ "./demo-app"]
+CMD [ "./manager"]

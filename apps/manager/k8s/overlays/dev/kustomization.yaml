@@ -2,16 +2,16 @@ apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 namePrefix: dev-
 commonLabels:
-  app: dev-demo-app
+  app: dev-manager
   release: dev
 namespace: dev
 resources:
 - ../../base
 images:
-- name: crkushal7/demo-app
-  newName: crkushal7/demo-app
-  newTag: demo-app-main-9b3f3939d1dd8befc48966c9434aaf746e035c03
+- name: crkushal7/manager
+  newName: crkushal7/manager
+  newTag: manager-main-5445f5dbbfbb0f37dfb1156d40b353ccab0389e4
 configMapGenerator:
 - envs:
   - .env
-  name: demo-app-config
+  name: manager-config

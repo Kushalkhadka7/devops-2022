@@ -1,8 +1,8 @@
 package router
 
 import (
-	"demo-app/config"
 	"fmt"
+	"manager/config"
 	"net"
 	"os"
 	"os/exec"

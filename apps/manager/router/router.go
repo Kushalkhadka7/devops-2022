@@ -29,6 +29,8 @@ func New(config *config.Config) *Router {
 	r.Use(gin.Recovery())
 
 	r.GET("/", func(c *gin.Context) {
+		fmt.Println("Info endpoint")
+
 		cmd := exec.Command("hostname", "-i")
 		value, err := cmd.Output()
 		if err != nil {

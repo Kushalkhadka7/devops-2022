@@ -7,9 +7,6 @@ commonLabels:
 namespace: dev
 resources:
   - ../../base
-replicas:
-- name: manager
-  count: 2
 images:
   - name: crkushal7/manager
     newName: crkushal7/manager

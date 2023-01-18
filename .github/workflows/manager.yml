@@ -60,7 +60,7 @@ jobs:
 
           make docker-tag
 
-          docker login -u $(DOCKER_USER_NAME) -p $(DOCKER_HUB_PASSWORD)
+          docker login -u $DOCKER_USER_NAME -p $DOCKER_HUB_PASSWORD
 
           make docker-push
 

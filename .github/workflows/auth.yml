@@ -1,0 +1,90 @@
+---
+name: Auth App
+
+on:
+  pull_request:
+    types: [synchronize, closed]
+    branches:
+      - main
+    paths:
+      - 'apps/auth/**'
+
+defaults:
+  run:
+    working-directory: "./"
+
+jobs:
+  detect-file-changes:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - uses: dorny/paths-filter@v2
+        id: changes
+        with:
+          base: ${{ github.base_ref || 'main' }}
+          filters: |
+            auth:
+              - 'apps/auth/**'
+
+      - name: Output
+        id: changed-app
+        run: |
+          echo "is_updated=true" >> $GITHUB_ENV
+
+    outputs:
+      app: ${{ env.is_updated }}
+  
+  build-docker-images:
+    needs: [detect-file-changes]
+    if: ${{ contains(needs.detect-file-changes.outputs.app, 'true') }}
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./apps/auth
+      
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Build and push docker image
+        env: 
+          STAGE: dev
+          DOCKER_USER_NAME: ${{ secrets.DOCKER_USER_NAME }}
+          DOCKER_HUB_PASSWORD: ${{ secrets.DOCKER_HUB_PASSWORD }}
+        run: |
+          export STAGE=dev
+
+          make docker-build
+
+          make docker-tag
+
+          docker login -u $DOCKER_USER_NAME -p $DOCKER_HUB_PASSWORD
+
+          make docker-push
+
+      - name: Update kustomize
+        run: |
+          export STAGE=dev
+          make edit-image-name
+      
+      - name: Commit New changes
+        run: |
+          git config --global user.name "kushal"
+          git config --global user.email "kushal@gmail.com"
+          git add .
+          git commit -m "Update kustomize manifest"
+
+      - name: Push to branch
+        uses: CasperWA/push-protected@v2
+        with:
+          token: ${{ secrets.DEVOPS_GITHUB_TOKEN }}
+          branch: ${{ github.base_ref || github.ref_name }}
+
+
+
+
+
+        
+      

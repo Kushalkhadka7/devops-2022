@@ -8,7 +8,7 @@ namespace: dev
 resources:
 - ../../base
 replicas:
-- count: 2
+- count: 4
   name: manager
 images:
 - name: crkushal7/manager

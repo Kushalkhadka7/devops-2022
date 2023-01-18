@@ -1,0 +1,89 @@
+---
+name: Manager App
+
+on:
+  pull_request:
+    types: [synchronize, closed, opened]
+    branches:
+      - main
+    paths:
+      - 'apps/manager/**'
+
+defaults:
+  run:
+    working-directory: "./"
+
+jobs:
+  detect-file-changes:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - uses: dorny/paths-filter@v2
+        id: changes
+        with:
+          base: ${{ github.base_ref || 'main' }}
+          filters: |
+            manager:
+              - 'apps/manager/**'
+
+      - name: Output
+        id: changed-app
+        run: |
+          echo "is_updated=true" >> $GITHUB_ENV
+
+    outputs:
+      app: ${{ env.is_updated }}
+  
+  build-docker-images:
+    needs: [detect-file-changes]
+    if: ${{ contains(needs.detect-file-changes.outputs.app, 'true') }}
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./apps/manager
+      
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Build and push docker image
+        env: 
+          STAGE: dev
+        run: |
+          export STAGE=dev
+
+          make docker-build
+
+          make docker-tag
+
+          docker login --username $(DOCKER_USER_NAME) --password $(DOCKER_HUB_PASSWORD)
+
+          make docker-push
+
+      - name: Update kustomize
+        run: |
+          make edit-image-name
+      
+      - name: Commit New changes
+        if : ${{ contains(env.should_skip_commit, 'false') }}
+        run: |
+          git config --global user.name "kushal"
+          git config --global user.email "kushal@gmail.com"
+          git add .
+          git commit -m "Update kustomize manifest"
+
+      - name: Push to branch
+        if : ${{ contains(env.should_skip_commit, 'false') }}
+        uses: CasperWA/push-protected@v2
+        with:
+          token: ${{ secrets.DEVOPS_GITHUB_TOKEN }}
+          branch: ${{ github.base_ref || github.ref_name }}
+
+
+
+
+
+        
+      

@@ -8,12 +8,12 @@ namespace: dev
 resources:
 - ../../base
 replicas:
-- name: manager
-  count: 4
+- count: 2
+  name: manager
 images:
 - name: crkushal7/manager
   newName: crkushal7/manager
-  newTag: manager-main-0abfee6855dd5f0b11e623a4d57f6c74d5487b52
+  newTag: manager-main-82943400b6fefc1613c29ee9b1498500cd5d75ff
 configMapGenerator:
 - envs:
   - .env

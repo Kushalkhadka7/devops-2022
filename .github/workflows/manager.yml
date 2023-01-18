@@ -51,6 +51,8 @@ jobs:
       - name: Build and push docker image
         env: 
           STAGE: dev
+          DOCKER_USER_NAME: ${{ secrets.DOCKER_USER_NAME }}
+          DOCKER_HUB_PASSWORD: ${{ secrets.DOCKER_HUB_PASSWORD }}
         run: |
           export STAGE=dev
 
@@ -58,7 +60,7 @@ jobs:
 
           make docker-tag
 
-          docker login --username $(secrets.DOCKER_USER_NAME) --password $(secrets.DOCKER_HUB_PASSWORD)
+          docker login -u $(DOCKER_USER_NAME) -p $(DOCKER_HUB_PASSWORD)
 
           make docker-push
 

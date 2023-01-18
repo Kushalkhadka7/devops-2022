@@ -7,13 +7,10 @@ commonLabels:
 namespace: dev
 resources:
 - ../../base
-replicas:
-- name: manager
-  count: 3
 images:
 - name: crkushal7/manager
   newName: crkushal7/manager
-  newTag: manager-main-5445f5dbbfbb0f37dfb1156d40b353ccab0389e4
+  newTag: manager-main-e5d81e18917ce5fad179ef7369799b3d0dbaf3ca
 configMapGenerator:
 - envs:
   - .env

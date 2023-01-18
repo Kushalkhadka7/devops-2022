@@ -50,7 +50,7 @@ func New(config *config.Config) *Router {
 			"hostname":   value,
 			"ip_address": addrs,
 			"message":    "Success",
-			"name":       "manager11",
+			"name":       "manager",
 		})
 	})
 

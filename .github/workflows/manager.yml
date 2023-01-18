@@ -66,6 +66,7 @@ jobs:
 
       - name: Update kustomize
         run: |
+          export STAGE=dev
           make edit-image-name
       
       - name: Commit New changes

@@ -3,7 +3,7 @@ name: Manager App
 
 on:
   pull_request:
-    types: [synchronize, closed, opened]
+    types: [synchronize, closed]
     branches:
       - main
     paths:

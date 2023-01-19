@@ -1,0 +1,16 @@
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: manager-virtual-service
+  namespace: istio-system
+spec:
+  hosts:
+    - 'app.manager.com'
+  gateways:
+    - istio-gateway
+  http:
+    - route:
+        - destination:
+            host: dev-manager-service.dev.svc.cluster.local
+            port:
+              number: 5000

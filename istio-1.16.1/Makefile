@@ -11,3 +11,9 @@ enable-istio-injection:
 
 reload-pods:
 	@kubectl rollout restart deployment dev-manager -n dev
+
+deploy-ingress-gateway:
+	@kubectl apply -f $(APP_ROOT)/ingress/gateway.yml
+
+deploy-virtual-services:
+	@kubectl apply -f $(APP_ROOT)/ingress/virtualservice .

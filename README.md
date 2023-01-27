@@ -138,3 +138,30 @@ make deploy-monitoring
   ```
   make reload-pods
   ```
+- Deploy ingress gateway
+  ```
+  make deploy-ingress-gateway
+  ```
+- Deploy virtual services
+  ```
+  make deploy-virtual-services
+  ```
+
+## Test the app running
+
+- Update the /etc/hosts file with the ip address of the cluster
+
+  ```
+  <cluster ip> app.manager.com
+  <cluster ip> app.auth.com
+  <cluster ip> app.kiali.com
+
+  ```
+
+- Browse the app
+
+  ```
+  - manager.com will redirect to manager app
+  - auth.com will redirect to auth app
+  - kiali.com will redirect to kiali dashboard
+  ```

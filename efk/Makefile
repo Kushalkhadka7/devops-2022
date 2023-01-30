@@ -1,4 +1,4 @@
-.PHONY: cluster delete-clusters help database
+.PHONY: deploy-efk
 
 # Deploy efk stack to kubernetes cluster
 deploy-efk:

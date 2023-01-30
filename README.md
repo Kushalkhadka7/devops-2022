@@ -1,24 +1,29 @@
 # Devops session 2023 (Part 3)
 
-## Assignment 1
+## Assignment
 
-- Deploy ec2 autoscaling group with launch template. -> done
-- Deploy App and Api in k8s with nodeslector and resource quota
-- Deploy Database in k8s and connect with api
-- Create a kubeconfig that has read only access to pods of specific namespace
-- Setup EFK in k8s for log
-
-## Assignment 2
-
-- Setup GitHub action/circleci/Travisci/jenkins for CI
-- Setup ArgoCD for CD or setup argo stack for CI/CD
-- Deploy Prometheus and grafana for resource monitoring(create user and alert)
-- Deploy cronjob, Ingress and Secrets & configmap
+![1](assets/apps-in-dev-ns.png)
+![1](assets/argocd-app.png)
+![1](assets/argocd-app1.png)
+![1](assets/argocd-app2.png)
+![1](assets/argocd-stack.png)
+![1](assets/auth.png)
+![1](assets/manager-app.png)
+![1](assets/efk-stack.png)
+![1](assets/github-action.png)
+![1](assets/grafana-dashboard.png)
+![1](assets/grafana-dashboard1.png)
+![1](assets/istio-ingress.png)
+![1](assets/istio-stack.png)
+![1](assets/kiali-logs.png)
+![1](assets/kibana-dashboard.png)
 
 ## Requirements
 
 - docker
 - aws
+- istio
+- helm
 - kubectl
 - kustomize
 

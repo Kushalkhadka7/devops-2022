@@ -9,15 +9,15 @@ METAL_LB ?= $(APP_ROOT)/metallb
 METRIC_SERVER ?= $(APP_ROOT)/metricserver
 DATABASE ?= $(APP_ROOT)/database
 EFK ?= $(APP_ROOT)/efk
-ARGO ?= $(APP_ROOT)/argo
 ISTIO ?= $(APP_ROOT)/istio-1.16.1
+K8S ?= $(APP_ROOT)/k8s
 
 include $(METAL_LB)/Makefile
 include $(METRIC_SERVER)/Makefile
-# include $(DATABASE)/Makefile
+include $(DATABASE)/Makefile
 include $(EFK)/Makefile
-include $(ARGO)/Makefile
 include $(ISTIO)/Makefile
+include $(K8S)/Makefile
 
 # Create kind cluster
 cluster: 
@@ -38,6 +38,27 @@ use-cluster-config:
 # Label given node with the current env
 label-node:
 	@kubectl label nodes $(NODE_NAME) env=$(STAGE)
+
+deploy-argocd:
+	@kubectl apply -f $(APP_ROOT)/argo/namespace.yml
+	@kubectl apply -f $(APP_ROOT)/argo/argo.yaml -n argocd
+	@kubectl apply -f $(APP_ROOT)/argo/kustomize.yml -n argocd
+
+create-argo-apps:
+	@kubectl apply -f $(APP_ROOT)/argo/apps/app.yaml
+	@kubectl apply -f $(APP_ROOT)/argo/apps/auth.yml
+
+get-argo-password:
+	@kubectl get secret -n argocd argocd-initial-admin-secret -o jsonpath="{.data.password}" | base64 -d && echo
+
+deploy-monitoring:
+	@kubectl create ns monitoring
+	@helm repo add grafana https://grafana.github.io/helm-charts
+	@helm repo update 
+	@helm install prometheus prometheus-community/prometheus -n monitoring
+
+get-grafana-login-password:
+	@kubectl get secret --namespace default grafana -o jsonpath="{.data.admin-password}" | base64 --decode ; echo
 
 # Help
 help:

@@ -1,5 +1,0 @@
-.PHONY: mongo-db
-
-# Deploy mongo db on cluster
-deploy-mongo-db:
-	@kubectl apply -f $(APP_ROOT)/database .

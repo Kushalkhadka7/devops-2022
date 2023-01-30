@@ -9,7 +9,7 @@ resources:
 - ../../base
 replicas:
 - name: auth
-  count: 3
+  count: 2
 images:
 - name: crkushal7/auth
   newName: crkushal7/auth

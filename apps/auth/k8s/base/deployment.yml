@@ -14,6 +14,16 @@ spec:
       labels:
         app: auth
     spec:
+      affinity:
+        nodeAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+            - weight: 1
+              preference:
+                matchExpressions:
+                - key: env
+                  operator: In
+                  values:
+                  - dev
       volumes:
         - name: auth-creds
           secret:
@@ -29,8 +39,7 @@ spec:
             - name: shared-volume
               mountPath: /shared
           command: ["/bin/sh"]
-          args: ["-c", "echo 'hello kuberenetes' > /shared/abc.txt"]
-
+          args: ["-c", "echo 'hello kuberenetes' > /shared/abc.txt"]                          
       containers:
         - name: auth
           image: crkushal7/auth

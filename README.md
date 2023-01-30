@@ -2,6 +2,9 @@
 
 ## Assignment
 
+- Auto scaling group with launch template
+  https://github.com/Kushalkhadka7/aws-asg-terraform
+
 ![1](assets/apps-in-dev-ns.png)
 ![1](assets/argocd-app.png)
 ![1](assets/argocd-app1.png)
